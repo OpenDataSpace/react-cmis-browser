@@ -5,7 +5,7 @@ var uploaderStore = Reflux.createStore({
     items: [],
     init: function () {
         this.listenTo(actions.uploaderAddFile, this.onAddFile);
-        this.listenTo(actions.uploaderStart, this.onStartUpload);
+        this.listenTo(actions.uploaderClearFiles, this.onClearFiles);
     },
     getInitialState: function () {
         return this.items;
@@ -15,9 +15,9 @@ var uploaderStore = Reflux.createStore({
         this.items.push(file);
         this.trigger(this.items);
     },
-    onStartUpload: function() {
-        console.log('started');
-
+    onClearFiles: function() {
+        this.items = [];
+        this.trigger(this.items);
     }
 });
 

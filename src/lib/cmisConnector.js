@@ -13,6 +13,12 @@
      */
     this.rootFolderId = null;
 
+    /**
+     * Current folder id
+     * @type {string}
+     */
+    this.currentFolderId = null;
+
     this.url = connectOptions.cmisBrowser;
 
     // TODO: this is very very temp solution!!!!!!!
@@ -38,7 +44,7 @@
           }
           session.getObjectByPath('/')
             .ok(function (data) {
-              this.rootFolderId = data.succinctProperties['cmis:objectId'];
+              this.rootFolderId = this.currentFolderId= data.succinctProperties['cmis:objectId'];
               callbackOk();
             }.bind(this))
             .notOk(function() { callbackError(arguments[0]); })
@@ -56,7 +62,7 @@
       var access = {};
       var type = flowFile.type || 'text/plain';
       access[this.username] = ['cmis:read'];
-      this.session.createDocument(this.rootFolderId, undefined, flowFile.name, type, undefined, undefined, access, null, null)
+      this.session.createDocument(this.currentFolderId, undefined, flowFile.name, type, undefined, undefined, access, null, null)
         .ok(function (data) {
           flowFile.cmisId = data.succinctProperties['cmis:objectId'];
           callback.call(null, 'success', data);

@@ -12,7 +12,7 @@ var fileBrowserStore = Reflux.createStore({
         this.listenTo(actions.fileBrowserLoadRoot, this.onLoadRoot);
         this.listenTo(actions.fileBrowserLoadPath, this.onLoadPath);
         this.listenTo(actions.fileBrowserLoadBack, this.onLoadBack);
-        this.listenTo(actions.fileBrowserUpdate, this.onLoadUpdate);
+        this.listenTo(actions.fileBrowserReload, this.onLoadUpdate);
         this.listenTo(actions.fileBrowserDownloadFile, this.onFileDownload);
     },
     onLoadRoot: function() {
@@ -35,7 +35,7 @@ var fileBrowserStore = Reflux.createStore({
             if (!preventHistory) {
                 self.foldersHistory.push(self.currentFolderId);
             }
-            self.currentFolderId = folderId;
+            self.currentFolderId = app.cmisConnector.currentFolderId = folderId;
             self.list = [];
             data.objects.forEach(function (item) {
                 self.list.push(self.convertFileItem(item, self.list.length));

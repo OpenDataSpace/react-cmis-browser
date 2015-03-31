@@ -9,8 +9,8 @@ var app = require('../app');
 var Uploader = React.createClass({
     mixins: [Reflux.connect(uploaderStore, "items"), Reflux.listenTo(uploaderStore,"onItemsChange")],
     flow: undefined,
-    onItemsChange: function () {
-        console.log('something changed!!');
+    onItemsChange: function (items) {
+        this.setState({ itemsCount: items.length });
     },
     getInitialState: function() {
         return { itemsCount: 0 };
@@ -31,12 +31,11 @@ var Uploader = React.createClass({
                 {uploaderItems}
             </div>
             <button className="uploader-start" onClick={this.handleStartUploadClick}>Start upload</button>
-            <div className="counter">{this.state.itemsCount}</div>
+            <div className="counter">{this.state.itemsCount} files</div>
         </div>;
     },
-    handleStartUploadClick: function (evt) {
-        evt.preventDefault();
-        actions.uploaderStart();
+    handleStartUploadClick: function () {
+        this.flow.upload();
     },
     initializeFlow: function(addFileButton) {
         this.flow = new Flow({
@@ -48,6 +47,10 @@ var Uploader = React.createClass({
         this.flow.on('catchAll', function (event) { console.log('catchAll', arguments); });
         this.flow.on('fileAdded', function(file){
             actions.uploaderAddFile(file);
+        });
+        this.flow.on('complete', function() {
+            actions.fileBrowserReload();
+            actions.uploaderClearFiles();
         });
         this.flow.assignBrowse(addFileButton);
     }

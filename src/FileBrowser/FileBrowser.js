@@ -22,7 +22,7 @@ var FileBrowser = React.createClass({
     },
     handleUpdateClick: function (evt) {
         evt.preventDefault();
-        actions.fileBrowserUpdate();
+        actions.fileBrowserReload();
     },
     handleBackClick: function (evt) {
         evt.preventDefault();
