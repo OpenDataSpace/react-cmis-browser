@@ -1,12 +1,13 @@
 var React = require('react');
 var actions = require('../actions');
+var utils = require('../utils');
 
 var FileItem = React.createClass({
     getInitialState: function() {
         return {
             creationDate: (new Date(this.props.file.creationDate)).toLocaleString(),
             lastModificationDate: (new Date(this.props.file.lastModificationDate)).toLocaleString(),
-            fileSize: this.bytesToSize(this.props.file.fileSize)
+            fileSize: utils.fileUtils.bytesToSize(this.props.file.fileSize)
         }
     },
     render: function () {
@@ -28,14 +29,6 @@ var FileItem = React.createClass({
         else {
             actions.fileBrowserDownloadFile(this.props.file.id);
         }
-    },
-    bytesToSize: function(bytes) {
-        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-        if (!bytes) {
-            return 'n/a';
-        }
-        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
     }
 });
 

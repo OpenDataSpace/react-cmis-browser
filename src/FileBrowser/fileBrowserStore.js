@@ -4,7 +4,6 @@ var actions = require('../actions');
 
 var fileBrowserStore = Reflux.createStore({
     list: [],
-    filesCounter: 0,
     currentPath: '/',
     rootFolderId: undefined,
     currentFolderId: undefined,
@@ -38,9 +37,8 @@ var fileBrowserStore = Reflux.createStore({
             }
             self.currentFolderId = folderId;
             self.list = [];
-            self.filesCounter = 0;
             data.objects.forEach(function (item) {
-                self.list.push(self.convertFileItem(item, self.filesCounter++));
+                self.list.push(self.convertFileItem(item, self.list.length));
             });
             self.trigger(self.list);
         });
