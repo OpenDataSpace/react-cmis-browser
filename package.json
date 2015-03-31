@@ -18,7 +18,7 @@
     "watchify": "^2.4.0"
   },
   "dependencies": {
-    "cmis": "^0.1.8",
+    "cmis": "git://github.com/philipshurpik/CmisJS.git",
     "react": "^0.13.1",
     "reflux": "^0.2.7"
   },
