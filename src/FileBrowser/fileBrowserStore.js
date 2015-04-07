@@ -16,7 +16,7 @@ var fileBrowserStore = Reflux.createStore({
         this.listenTo(actions.fileBrowserDownloadFile, this.onFileDownload);
     },
     onLoadRoot: function() {
-        this.rootFolderId = app.cmisConnector.rootFolderId;
+        this.rootFolderId = app.cmisConnector.session.defaultRepository.rootFolderId;
         this.onLoadPath(this.rootFolderId, true);
     },
     onLoadUpdate: function() {

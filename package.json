@@ -1,8 +1,10 @@
 {
   "name": "react-cmis-browser",
   "version": "0.0.1",
+  "private": true,
   "description": "Cmis browser written on javascript with ReactJS, Reflux, CmisJS, Gulp",
   "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Philip Shurpik",
@@ -20,7 +22,8 @@
   "dependencies": {
     "cmis": "git://github.com/philipshurpik/CmisJS.git",
     "react": "^0.13.1",
-    "reflux": "^0.2.7"
+    "reflux": "^0.2.7",
+    "react-native": "^0.3.4"
   },
   "main": "src/index.js",
   "repository": {

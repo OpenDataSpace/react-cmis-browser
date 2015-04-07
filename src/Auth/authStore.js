@@ -9,29 +9,29 @@ var authStore = Reflux.createStore({
         this.listenTo(actions.createSession.sessionCreated, this.onSessionCreated);
         this.listenTo(actions.createSession.sessionFailed, this.onSessionFailed);
         // TODO: Only for development purposes!!!!!!!!
-        var credentials = localStorage.getItem('credentials');
+        if (window.localStorage) {
+            var credentials = localStorage.getItem('credentials');
+        }
         if (credentials) {
             actions.createSession(JSON.parse(credentials));
         }
     },
     onCreateSession: function (credentials) {
-        app.cmisConnector.createSession(credentials, function success() {
-            // TODO: Only for development purposes!!!!!!!!
-            localStorage.setItem('credentials', JSON.stringify(credentials));
-            //
-            actions.createSession.sessionCreated(app.cmisConnector.session, credentials.username);
-        }.bind(this), function error() {
-            actions.createSession.sessionFailed();
-        }.bind(this));
+        app.cmisConnector.createSession(credentials,
+            actions.createSession.sessionCreated.bind(this, app.cmisConnector.session, credentials.username),
+            actions.createSession.sessionFailed);
     },
     onSessionCreated: function(session, username) {
         this.session = session;
-        localStorage.setItem('cmisConnector', JSON.stringify(app.cmisConnector));
         console.log('session created');
         this.trigger('success', username);
+        // TODO: Only for development purposes!!!!!!!!
+        if (window.localStorage) {
+            localStorage.setItem('credentials', JSON.stringify(credentials));
+        }
     },
-    onSessionFailed: function() {
-        this.trigger('failure', "", "Unable to login. Invalid login or password");
+    onSessionFailed: function(exc) {
+        this.trigger('failure', "", exc);
     }
 });
 
