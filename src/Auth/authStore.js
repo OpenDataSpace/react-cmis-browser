@@ -18,13 +18,13 @@ var authStore = Reflux.createStore({
     },
     onCreateSession: function (credentials) {
         app.cmisConnector.createSession(credentials,
-            actions.createSession.sessionCreated.bind(this, app.cmisConnector.session, credentials.username),
+            actions.createSession.sessionCreated.bind(this, app.cmisConnector.session, credentials),
             actions.createSession.sessionFailed);
     },
-    onSessionCreated: function(session, username) {
+    onSessionCreated: function(session, credentials) {
         this.session = session;
         console.log('session created');
-        this.trigger('success', username);
+        this.trigger('success', credentials.username);
         // TODO: Only for development purposes!!!!!!!!
         if (window.localStorage) {
             localStorage.setItem('credentials', JSON.stringify(credentials));

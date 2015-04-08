@@ -9,7 +9,7 @@ var actions = require('../actions');
 var Main = React.createClass({
     mixins: [Reflux.listenTo(mainStore,"onMainChange")],
     getInitialState: function() {
-        return { isBrowserActive: false, isUploaderActive: true };
+        return { isBrowserActive: false, isUploaderActive: false };
     },
     onMainChange: function(newState) {
         if (newState.isBrowserActive !== undefined) {
@@ -18,6 +18,7 @@ var Main = React.createClass({
             }
             this.setState({ isBrowserActive: !!newState.isBrowserActive });
         }
+        this.setState({ isUploaderActive: !!newState.isUploaderActive });
     },
     render: function () {
         return <div className="main">

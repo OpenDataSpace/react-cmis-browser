@@ -6,7 +6,7 @@ var app = require('./src/app');
 
 (function init() {
     config.cmis.onConnectCallback = function (session) {
-        var cmisLocalServer = "http://localhost:" + config.webServer.port + config.webServer.proxySource;
+        var cmisLocalServer = "http://" + window.location.host + config.webServer.proxySource;
         session.defaultRepository.repositoryUrl = session.defaultRepository.repositoryUrl.replace('https://', 'http://').replace(config.webServer.proxyTarget, cmisLocalServer);
         session.defaultRepository.rootFolderUrl = session.defaultRepository.rootFolderUrl.replace('https://', 'http://').replace(config.webServer.proxyTarget, cmisLocalServer);
     };
