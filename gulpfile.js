@@ -10,7 +10,7 @@ var webserver = require('gulp-webserver');
 var appConfig = require('./config.json');
 
 var path = {
-    HTML: ['src/index.html'],
+    HTML: ['./index.html'],
     MINIFIED_OUT: 'build.min.js',
     OUT: 'build.js',
     DEST: 'dist',
