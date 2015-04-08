@@ -1,5 +1,7 @@
 var React = require('react');
 var Reflux = require('reflux');
+var Router = require('react-router');
+var { Route, RouteHandler, Link } = Router;
 var FileList = require('./FileList');
 var actions = require('../actions');
 var fileBrowserStore = require('./fileBrowserStore');
@@ -12,9 +14,8 @@ var FileBrowser = React.createClass({
     render: function () {
         return <div className="fileBrowser">
             <h3>File Browser</h3>
+            <Link to="uploader">Uploader</Link>
             <p><a href="" onClick={this.handleBackClick}>Go back</a></p>
-            <br/>
-            <p><a href="" onClick={this.handleUpdateClick}>Click to update me</a></p>
             <br/>
             <FileList filesList={this.state.filesList} />
             <br/>

@@ -16,21 +16,13 @@ var Main = React.createClass({
     onMainChange(state) {
         this.setState(state);
         if (state.loggedIn) {
+            actions.fileBrowserLoadRoot();
             this.context.router.transitionTo('/fileBrowser');
         }
     },
     render() {
-        var name = this.context.router.getCurrentPath(); // ===  ;
-        name = (name === '/' ? '/auth' : name);
         return <div className="main">
-            <div>
-                <ul>
-                    <li><Link to="auth">Auth</Link></li>
-                    <li><Link to="uploader">Uploader</Link></li>
-                    <li><Link to="fileBrowser">FileBrowser</Link></li>
-                </ul>
-                <RouteHandler key={name}/>
-            </div>
+            <RouteHandler />
         </div>;
     }
 });
