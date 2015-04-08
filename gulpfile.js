@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var htmlreplace = require('gulp-html-replace');
+var concatCss = require('gulp-concat-css');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var watchify = require('watchify');
@@ -11,11 +12,12 @@ var appConfig = require('./config.json');
 
 var path = {
     HTML: ['./index.html'],
+    CSS: './src/**/*.css',
+    FONTS: ['./src/lib/fonts/**.*'],
     MINIFIED_OUT: 'build.min.js',
     OUT: 'build.js',
-    DEST: 'dist',
-    DEST_BUILD: 'build',
-    DEST_SRC: 'dist/src',
+    DEST_BUILD: 'dist/build',
+    DEST_LOCAL: 'dist/local/',
     ENTRY_POINT: './index.web.js'
 };
 
@@ -27,9 +29,20 @@ gulp.task('copyReplaceBuild', function() {
         .pipe(gulp.dest(path.DEST_BUILD));
 });
 
-gulp.task('copy', function() {
-    gulp.src(path.HTML)
-        .pipe(gulp.dest(path.DEST));
+gulp.task('html', function() {
+    return gulp.src(path.HTML)
+        .pipe(gulp.dest(path.DEST_LOCAL));
+});
+
+gulp.task('css', function() {
+    return gulp.src(path.CSS)
+        .pipe(concatCss("css/build.css", { rebaseUrls: false }))
+        .pipe(gulp.dest(path.DEST_LOCAL));
+});
+
+gulp.task('icons', function() {
+    return gulp.src(path.FONTS)
+        .pipe(gulp.dest(path.DEST_LOCAL + 'fonts/'));
 });
 
 gulp.task('watch', function() {
@@ -45,11 +58,11 @@ gulp.task('watch', function() {
     return watcher.on('update', function (changedFile) {
         watcher.bundle()
             .pipe(source(path.OUT))
-            .pipe(gulp.dest(path.DEST_SRC));
+            .pipe(gulp.dest(path.DEST_LOCAL));
     })
         .bundle()
         .pipe(source(path.OUT))
-        .pipe(gulp.dest(path.DEST_SRC));
+        .pipe(gulp.dest(path.DEST_LOCAL));
 });
 
 gulp.task('build', function() {
@@ -66,7 +79,7 @@ gulp.task('build', function() {
 });
 
 gulp.task('server', function() {
-    gulp.src(path.DEST)
+    gulp.src(path.DEST_LOCAL)
         .pipe(webserver({
             livereload: true,
             host: appConfig.webServer.host,
@@ -84,4 +97,4 @@ gulp.task('server', function() {
 });
 
 gulp.task('production', ['copyReplaceBuild', 'build']);
-gulp.task('default', ['copy', 'watch', 'server']);
+gulp.task('default', ['html', 'css', 'icons', 'watch', 'server']);
