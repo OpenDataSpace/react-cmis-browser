@@ -14,17 +14,17 @@ var path = {
     MINIFIED_OUT: 'build.min.js',
     OUT: 'build.js',
     DEST: 'dist',
-    DEST_BUILD: 'dist/build',
+    DEST_BUILD: 'build',
     DEST_SRC: 'dist/src',
     ENTRY_POINT: './index.web.js'
 };
 
-gulp.task('replaceHTML', function() {
+gulp.task('copyReplaceBuild', function() {
     gulp.src(path.HTML)
         .pipe(htmlreplace({
-            'js': 'build/' + path.MINIFIED_OUT
+            'js': path.MINIFIED_OUT
         }))
-        .pipe(gulp.dest(path.DEST));
+        .pipe(gulp.dest(path.DEST_BUILD));
 });
 
 gulp.task('copy', function() {
@@ -83,5 +83,5 @@ gulp.task('server', function() {
         }));
 });
 
-gulp.task('production', ['replaceHTML', 'build']);
+gulp.task('production', ['copyReplaceBuild', 'build']);
 gulp.task('default', ['copy', 'watch', 'server']);
