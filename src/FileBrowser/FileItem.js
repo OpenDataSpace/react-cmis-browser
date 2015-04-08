@@ -24,7 +24,7 @@ var FileItem = React.createClass({
     handleItemClick: function(evt) {
         evt.preventDefault();
         if (this.props.file.isFolder) {
-            actions.fileBrowserLoadPath(this.props.file.id);
+            actions.fileBrowserLoadPath(this.props.file);
         }
         else {
             actions.fileBrowserDownloadFile(this.props.file.id);

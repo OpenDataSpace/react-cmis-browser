@@ -4,9 +4,13 @@ var actions = require('../actions');
 
 var fileBrowserStore = Reflux.createStore({
     list: [],
-    currentPath: '/',
     rootFolderId: undefined,
     currentFolderId: undefined,
+    currentFolderName: 'My',
+    currentFolder: {
+        id: undefined,
+        name: 'My'
+    },
     foldersHistory: [],
     init: function () {
         this.listenTo(actions.fileBrowserLoadRoot, this.onLoadRoot);
@@ -17,10 +21,10 @@ var fileBrowserStore = Reflux.createStore({
     },
     onLoadRoot: function() {
         this.rootFolderId = app.cmisConnector.session.defaultRepository.rootFolderId;
-        this.onLoadPath(this.rootFolderId, true);
+        this.onLoadPath({id: this.rootFolderId, name: 'My'}, true);
     },
     onLoadUpdate: function() {
-        this.onLoadPath(this.currentFolderId, true);
+        this.onLoadPath(this.currentFolder, true);
     },
     onLoadBack: function() {
         var backFolder = this.foldersHistory.pop();
@@ -28,19 +32,21 @@ var fileBrowserStore = Reflux.createStore({
             this.onLoadPath(backFolder, true);
         }
     },
-    onLoadPath: function(folderId, preventHistory) {
+    onLoadPath: function(folder, preventHistory) {
         var session = app.cmisConnector.session;
         var self = this;
-        session.getChildren(folderId).ok(function (data) {
+        session.getChildren(folder.id).ok(function (data) {
             if (!preventHistory) {
-                self.foldersHistory.push(self.currentFolderId);
+                self.foldersHistory.push(self.currentFolder);
             }
-            self.currentFolderId = app.cmisConnector.currentFolderId = folderId;
+            app.cmisConnector.currentFolderId = folder.id;
+            self.currentFolder = folder;
             self.list = [];
             data.objects.forEach(function (item) {
                 self.list.push(self.convertFileItem(item, self.list.length));
             });
-            self.trigger(self.list);
+            var backFolderName = self.foldersHistory.length > 0 ? self.foldersHistory[self.foldersHistory.length - 1].name : '';
+            self.trigger(self.list, {mainTitle: folder.name, backTitle: backFolderName });
         });
     },
     onFileDownload: function(fileId) {
