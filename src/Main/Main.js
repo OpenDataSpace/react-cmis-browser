@@ -9,23 +9,25 @@ var actions = require('../actions');
 var Main = React.createClass({
     mixins: [Reflux.listenTo(mainStore,"onMainChange")],
     getInitialState: function() {
-        return { isBrowserActive: false, isUploaderActive: false };
+        return { isBrowserActive: false, isUploaderActive: false, isUploaderButtonActive: false, uploaderButtonText: "Upload files" };
     },
     onMainChange: function(newState) {
-        if (newState.isBrowserActive !== undefined) {
-            if (!this.state.isBrowserActive && newState.isBrowserActive === true) {
-                actions.fileBrowserLoadRoot();
-            }
-            this.setState({ isBrowserActive: !!newState.isBrowserActive });
+        if (!this.state.isBrowserActive && newState.isBrowserActive === true) {
+            actions.fileBrowserLoadRoot();
         }
-        this.setState({ isUploaderActive: !!newState.isUploaderActive });
+        this.setState(newState);
     },
     render: function () {
         return <div className="main">
             <Auth />
+            {this.state.isUploaderButtonActive ? <button onClick={this.toggleUploaderClick}>{this.state.uploaderButtonText}</button> : null}
             {this.state.isUploaderActive ? <Uploader /> : null }
             {this.state.isBrowserActive ? <FileBrowser /> : null }
         </div>;
+    },
+    toggleUploaderClick: function() {
+        var uploaderButtonText = this.state.isUploaderActive ? "Upload files" : "Hide File Uploader";
+        this.setState({isUploaderActive: !this.state.isUploaderActive, uploaderButtonText: uploaderButtonText});
     }
 });
 

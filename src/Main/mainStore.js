@@ -7,10 +7,10 @@ var mainStore = Reflux.createStore({
         this.listenTo(actions.createSession.sessionFailed, this.onSessionFailed);
     },
     onSessionCreated: function() {
-        this.trigger({isBrowserActive: true, isUploaderActive: true});
+        this.trigger({isBrowserActive: true, isUploaderButtonActive: true, isUploaderActive: false});
     },
     onSessionFailed: function() {
-        this.trigger({isBrowserActive: false, isUploaderActive: false});
+        this.trigger({isBrowserActive: false, isUploaderButtonActive: false, isUploaderActive: false});
     }
 });
 
