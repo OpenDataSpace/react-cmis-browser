@@ -2,11 +2,15 @@ var React = require('react');
 var actions = require('../actions');
 
 var TabBar = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     render: function () {
         var classes = {
-            my: "tab-item" + (this.props.repositoryName === "my" ? ' active' : ''),
-            shared: "tab-item" + (this.props.repositoryName === "shared" ? ' active' : ''),
-            global: "tab-item" + (this.props.repositoryName === "global" ? ' active' : '')
+            my: "tab-item" + (this.props.tabName === "my" ? ' active' : ''),
+            shared: "tab-item" + (this.props.tabName === "shared" ? ' active' : ''),
+            global: "tab-item" + (this.props.tabName === "global" ? ' active' : ''),
+            settings: "tab-item" + (this.props.tabName === "settings" ? ' active' : '')
         };
         return <nav className="bar bar-tab">
             <a className={classes.my} onClick={this.handleItemClick.bind(null, 'my')}>
@@ -25,7 +29,7 @@ var TabBar = React.createClass({
                 <span className="icon icon-search"></span>
                 <span className="tab-label">Search</span>
             </a>
-            <a className="tab-item" onClick={this.handleItemClick.bind(null, 'settings')}>
+            <a className={classes.settings} onClick={this.handleItemClick.bind(null, 'settings')}>
                 <span className="icon icon-gear"></span>
                 <span className="tab-label">Settings</span>
             </a>
@@ -35,6 +39,10 @@ var TabBar = React.createClass({
         var repositories = ['my', 'shared', 'global'];
         if (repositories.indexOf(tabName) !== -1) {
             actions.fileBrowserOpenRepository(tabName);
+            this.context.router.transitionTo('/fileBrowser');
+        }
+        if (tabName === 'settings') {
+            this.context.router.transitionTo('/settings');
         }
     }
 });

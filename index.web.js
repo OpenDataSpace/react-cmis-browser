@@ -5,6 +5,7 @@ var Main = require('./src/Main/Main.js');
 var Auth = require('./src/Auth/Auth.js');
 var FileBrowser = require('./src/FileBrowser/FileBrowser.js');
 var Uploader = require('./src/Uploader/Uploader.js');
+var SettingsPage = require('./src/Settings/SettingsPage.js');
 
 (function init() {
     var config = require('./config.json.js');
@@ -27,6 +28,7 @@ var routes = (
         <Route name="auth" handler={Auth}/>
         <Route name="fileBrowser" handler={FileBrowser}/>
         <Route name="uploader" handler={Uploader}/>
+        <Route name="settings" handler={SettingsPage}/>
     </Route>
 );
 

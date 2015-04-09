@@ -1,0 +1,14 @@
+.main .table-view {
+    position: absolute;
+    overflow: scroll;
+    bottom: 0;
+    top: 0;
+    margin-top: 44px;
+    margin-bottom: 44px;
+    border-top: 0;
+    right: 0;
+    left: 0;
+}
+.main .bar {
+    border-bottom: 0;
+}

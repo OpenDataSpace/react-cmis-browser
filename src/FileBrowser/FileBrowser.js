@@ -3,7 +3,7 @@ var Reflux = require('reflux');
 var Router = require('react-router');
 var { Route, RouteHandler, Link } = Router;
 var Ratchet = require('react-ratchet');
-var { NavBar, NavButton, Title } = Ratchet;
+var { NavBar, NavButton, Title, TableView } = Ratchet;
 var FileList = require('./FileList');
 var TabBar = require('./TabBar');
 var actions = require('../actions');
@@ -25,12 +25,10 @@ var FileBrowser = React.createClass({
                 <NavButton right icon={false}><Link to="uploader">Upload file</Link></NavButton>
                 <Title>{this.state.mainTitle}</Title>
             </NavBar>
-
-            <h3>File Browser</h3>
-            <br/>
-            <FileList filesList={this.state.filesList} />
-            <br/>
-            <TabBar repositoryName={this.state.repositoryName}/>
+            <TableView>
+                <FileList filesList={this.state.filesList} />
+            </TableView>
+            <TabBar tabName={this.state.repositoryName}/>
         </div>;
     },
     handleUpdateClick: function (evt) {
