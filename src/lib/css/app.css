@@ -1,3 +1,11 @@
+.authPage {
+    margin: 100px auto;
+    max-width: 400px;
+}
+.authPage input {
+    height: 50px !important;
+}
+
 .main .table-view {
     position: absolute;
     overflow: scroll;

@@ -6,6 +6,7 @@ var authStore = Reflux.createStore({
     session: undefined,
     init: function () {
         this.listenTo(actions.createSession, this.onCreateSession);
+        this.listenTo(actions.authLogout, this.onLogout);
         this.listenTo(actions.createSession.sessionCreated, this.onSessionCreated);
         this.listenTo(actions.createSession.sessionFailed, this.onSessionFailed);
         // TODO: Only for development purposes!!!!!!!!
@@ -32,6 +33,14 @@ var authStore = Reflux.createStore({
     },
     onSessionFailed: function(exc) {
         this.trigger('failure', "", exc);
+    },
+    onLogout: function() {
+        this.session = undefined;
+        // TODO: Only for development purposes!!!!!!!!
+        if (window.localStorage) {
+            localStorage.removeItem('credentials');
+        }
+        this.trigger('logout');
     }
 });
 

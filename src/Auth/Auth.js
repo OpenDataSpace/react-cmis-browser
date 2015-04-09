@@ -1,5 +1,7 @@
 var React = require('react');
 var Reflux = require('reflux');
+var Ratchet = require('react-ratchet');
+var { Button } = Ratchet;
 var actions = require('../actions');
 var authStore = require('./authStore');
 
@@ -18,15 +20,16 @@ var AuthComponent = React.createClass({
     render: function () {
         if (this.state.showForm) {
             return (
-                <div>
-                    <form onSubmit={this.handleEnter}>
-                        <label htmlFor="username">Username:</label>
-                        <input id="username" type="text" autoFocus onKeyUp={this.handleValueChange} />
-                        <label htmlFor="password">Password:</label>
-                        <input id="password" type="password" onKeyUp={this.handleValueChange} />
-                        <button type="submit">Enter</button>
-                        <div>{this.state.errorMessage}</div>
-                    </form>
+                <div className="authPage">
+                    <label htmlFor="username">Username:</label>
+                    <input id="username" type="text" autoFocus
+                        onChange={(evt) => this.setState({username: evt.target.value})}/>
+                    <label htmlFor="password">Password:</label>
+                    <input id="password" type="password"
+                        onChange={(evt) => this.setState({password: evt.target.value})}/>
+                    <label>&nbsp;</label>
+                    <Button block outlined rStyle="positive" onClick={this.handleEnter}>Login</Button>
+                    <div>{this.state.errorMessage}</div>
                 </div>
             )
         }
@@ -34,19 +37,9 @@ var AuthComponent = React.createClass({
             return <div><h4>Hello, {this.state.username}!</h4></div>;
         }
     },
-    handleValueChange: function(evt) {
-        var text = evt.target.value;
-        if (evt.which === 13 && text) {
-
-        }
-    },
-    handleEnter: function(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        var username = evt.target.username.value || "";
-        var password = evt.target.password.value || "";
-        if (username.trim().length > 0 && password.trim().length > 0) {
-            actions.createSession({username: username, password: password});
+    handleEnter: function() {
+        if (this.state.username.trim().length > 0 && this.state.password.trim().length > 0) {
+            actions.createSession({username: this.state.username, password: this.state.password});
         }
     }
 });
