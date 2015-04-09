@@ -22,10 +22,10 @@ var AuthComponent = React.createClass({
             return (
                 <div className="authPage">
                     <label htmlFor="username">Username:</label>
-                    <input id="username" type="text" autoFocus
+                    <input id="username" type="text" autoFocus autoComplete="off"
                         onChange={(evt) => this.setState({username: evt.target.value})}/>
                     <label htmlFor="password">Password:</label>
-                    <input id="password" type="password"
+                    <input id="password" type="password" autoComplete="off"
                         onChange={(evt) => this.setState({password: evt.target.value})}/>
                     <label>&nbsp;</label>
                     <Button block outlined rStyle="positive" onClick={this.handleEnter}>Login</Button>

@@ -15,7 +15,7 @@ var SettingsPage = React.createClass({
                 <Title>Settings</Title>
             </NavBar>
             <TableView>
-                <TableViewCell divider></TableViewCell>
+                <TableViewCell></TableViewCell>
                 <Button block outlined rStyle="negative" onClick={this.handleLogoutClick}>Logout</Button>
             </TableView>
             <TabBar tabName="settings"/>

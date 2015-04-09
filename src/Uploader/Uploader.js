@@ -1,7 +1,7 @@
 var React = require('react');
 var Reflux = require('reflux');
 var Ratchet = require('react-ratchet');
-var { NavBar, NavButton, Title } = Ratchet;
+var { NavBar, NavButton, Title, TableView, TableViewCell, Button } = Ratchet;
 var Flow = require('../lib/flowjs-cmis');
 var uploaderStore = require('./uploaderStore');
 var actions = require('../actions');
@@ -18,7 +18,7 @@ var Uploader = React.createClass({
         this.setState({ itemsCount: items.length });
     },
     getInitialState: function() {
-        return { itemsCount: 0, backTitle: this.props.backTitle };
+        return { itemsCount: 0, backTitle: this.props.backTitle, statusText: "" };
     },
     componentDidMount: function() {
         var component = React.findDOMNode(this);
@@ -29,18 +29,22 @@ var Uploader = React.createClass({
         var uploaderItems = this.state.items.map(function (item) {
             return <UploaderItem item={item} key={item.key}></UploaderItem>
         });
+        var status = this.state.statusText !== "" ? this.state.statusText : (this.state.itemsCount + " files");
         return <div className="uploader">
             <NavBar>
                 <NavButton left onClick={this.handleBackClick}>{this.state.backTitle}</NavButton>
                 <NavButton right icon={false} onClick={this.handleStartUploadClick}>Start</NavButton>
                 <Title>Upload files</Title>
             </NavBar>
-            <h3>Uploader</h3>
-            <button className="uploader-add-file">Add file</button>
-            <div className="uploaderList">
-                {uploaderItems}
-            </div>
-            <div className="counter">{this.state.itemsCount} files</div>
+            <TableView>
+                <TableViewCell></TableViewCell>
+                <Button className="uploader-add-file" block outlined rStyle="positive" onClick={this.handleLogoutClick}>Add file</Button>
+                <TableViewCell></TableViewCell>
+                <div className="uploaderList">
+                    {uploaderItems}
+                </div>
+                <TableViewCell divider>{status}</TableViewCell>
+            </TableView>
         </div>;
     },
     handleBackClick() {
@@ -48,6 +52,7 @@ var Uploader = React.createClass({
     },
     handleStartUploadClick: function () {
         this.flow.upload();
+        this.setState({statusText: "Uploading..."});
     },
     initializeFlow: function(addFileButton) {
         this.flow = new Flow({
@@ -59,11 +64,13 @@ var Uploader = React.createClass({
         this.flow.on('catchAll', function (event) { console.log('catchAll', arguments); });
         this.flow.on('fileAdded', function(file){
             actions.uploaderAddFile(file);
-        });
+            this.setState({statusText: ""});
+        }.bind(this));
         this.flow.on('complete', function() {
+            this.setState({statusText: "Successfully uploaded " + this.state.itemsCount + " files"});
             actions.fileBrowserReload();
             actions.uploaderClearFiles();
-        });
+        }.bind(this));
         this.flow.assignBrowse(addFileButton);
     }
 });

@@ -22,7 +22,7 @@ var FileBrowser = React.createClass({
         return <div className="fileBrowser">
             <NavBar>
                 {this.state.backTitle ? <NavButton left onClick={this.handleBackClick}>{this.state.backTitle}</NavButton> : null}
-                <NavButton right icon={false}><Link to="uploader">Upload file</Link></NavButton>
+                {this.state.repositoryName === 'my' ? <NavButton right icon={false}><Link to="uploader">Upload file</Link></NavButton> : null }
                 <Title>{this.state.mainTitle}</Title>
             </NavBar>
             <TableView>

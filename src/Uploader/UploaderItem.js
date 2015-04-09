@@ -1,4 +1,6 @@
 var React = require('react');
+var Ratchet = require('react-ratchet');
+var { TableViewCell } = Ratchet;
 var actions = require('../actions');
 var utils = require('../utils');
 
@@ -9,12 +11,7 @@ var UploaderItem = React.createClass({
         }
     },
     render: function () {
-        return <div className="fileItem">
-            <div className="fileIcon"></div>
-            <span className="name">{this.props.item.name}</span> |
-            <span className="fileSize">{this.state.fileSize}</span>
-            <p></p>
-        </div>
+        return <TableViewCell>{this.props.item.name} | {this.state.fileSize}</TableViewCell>
     }
 });
 
