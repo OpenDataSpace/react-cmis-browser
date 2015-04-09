@@ -1,3 +1,7 @@
+body {
+    position: initial !important;
+}
+
 .authPage {
     margin: 100px auto;
     max-width: 400px;
@@ -7,16 +11,16 @@
 }
 
 .main .table-view {
-    position: absolute;
-    overflow: scroll;
-    bottom: 0;
-    top: 0;
-    margin-top: 44px;
-    margin-bottom: 44px;
-    border-top: 0;
-    right: 0;
-    left: 0;
+    margin-top: 45px;
+    margin-bottom: 51px;
 }
 .main .bar {
     border-bottom: 0;
+}
+
+.bar a {
+    cursor: pointer;
+}
+.table-view-cell {
+    cursor: pointer;
 }

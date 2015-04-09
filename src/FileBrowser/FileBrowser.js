@@ -31,12 +31,7 @@ var FileBrowser = React.createClass({
             <TabBar tabName={this.state.repositoryName}/>
         </div>;
     },
-    handleUpdateClick: function (evt) {
-        evt.preventDefault();
-        actions.fileBrowserReload();
-    },
-    handleBackClick: function (evt) {
-        evt.preventDefault();
+    handleBackClick: function () {
         actions.fileBrowserLoadBack();
     }
 });

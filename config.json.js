@@ -4,7 +4,7 @@ module.exports = {
         "cmisBrowser": "/cmis/browser"
     },
     "webServer": {
-        "host": '10.0.1.4', //'localhost',
+        "host": '192.168.11.76', //'localhost',
         "port": 8181,
         "proxySource": "/cmis",
         "proxyTarget": "http://demo.dataspace.cc/cmis"

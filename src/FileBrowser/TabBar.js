@@ -25,7 +25,7 @@ var TabBar = React.createClass({
                 <span className="icon icon-pages"></span>
                 <span className="tab-label">Global</span>
             </a>
-            <a className="tab-item"  onClick={this.handleItemClick.bind(null, 'search')}>
+            <a className="tab-item" onClick={this.handleItemClick.bind(null, 'search')}>
                 <span className="icon icon-search"></span>
                 <span className="tab-label">Search</span>
             </a>
