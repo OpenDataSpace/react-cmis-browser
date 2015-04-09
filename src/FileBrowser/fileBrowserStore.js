@@ -18,6 +18,7 @@ var fileBrowserStore = Reflux.createStore({
         this.listenTo(actions.fileBrowserLoadBack, this.onLoadBack);
         this.listenTo(actions.fileBrowserReload, this.onLoadUpdate);
         this.listenTo(actions.fileBrowserDownloadFile, this.onFileDownload);
+        this.listenTo(actions.fileBrowserUpdateState, this.triggerUpdateState);
     },
     onLoadRoot: function() {
         this.rootFolderId = app.cmisConnector.session.defaultRepository.rootFolderId;
@@ -45,9 +46,13 @@ var fileBrowserStore = Reflux.createStore({
             data.objects.forEach(function (item) {
                 self.list.push(self.convertFileItem(item, self.list.length));
             });
-            var backFolderName = self.foldersHistory.length > 0 ? self.foldersHistory[self.foldersHistory.length - 1].name : '';
-            self.trigger(self.list, {mainTitle: folder.name, backTitle: backFolderName });
+            self.triggerUpdateState();
         });
+    },
+    triggerUpdateState() {
+        var history = this.foldersHistory;
+        var backFolderName = history.length > 0 ? history[history.length - 1].name : '';
+        this.trigger(this.list, {mainTitle: this.currentFolder.name, backTitle: backFolderName });
     },
     onFileDownload: function(fileId) {
         var session = app.cmisConnector.session;

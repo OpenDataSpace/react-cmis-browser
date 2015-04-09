@@ -1,5 +1,7 @@
 var React = require('react');
 var Reflux = require('reflux');
+var Ratchet = require('react-ratchet');
+var { NavBar, NavButton, Title } = Ratchet;
 var Flow = require('../lib/flowjs-cmis');
 var uploaderStore = require('./uploaderStore');
 var actions = require('../actions');
@@ -9,11 +11,14 @@ var app = require('../app');
 var Uploader = React.createClass({
     mixins: [Reflux.connect(uploaderStore, "items"), Reflux.listenTo(uploaderStore,"onItemsChange")],
     flow: undefined,
+    contextTypes: {
+        router: React.PropTypes.func
+    },
     onItemsChange: function (items) {
         this.setState({ itemsCount: items.length });
     },
     getInitialState: function() {
-        return { itemsCount: 0 };
+        return { itemsCount: 0, backTitle: this.props.backTitle };
     },
     componentDidMount: function() {
         var component = React.findDOMNode(this);
@@ -25,14 +30,21 @@ var Uploader = React.createClass({
             return <UploaderItem item={item} key={item.key}></UploaderItem>
         });
         return <div className="uploader">
+            <NavBar>
+                <NavButton left onClick={this.handleBackClick}>{this.state.backTitle}</NavButton>
+                <NavButton right icon={false} onClick={this.handleStartUploadClick}>Start</NavButton>
+                <Title>Upload files</Title>
+            </NavBar>
             <h3>Uploader</h3>
             <button className="uploader-add-file">Add file</button>
             <div className="uploaderList">
                 {uploaderItems}
             </div>
-            <button className="uploader-start" onClick={this.handleStartUploadClick}>Start upload</button>
             <div className="counter">{this.state.itemsCount} files</div>
         </div>;
+    },
+    handleBackClick() {
+        this.context.router.goBack();
     },
     handleStartUploadClick: function () {
         this.flow.upload();

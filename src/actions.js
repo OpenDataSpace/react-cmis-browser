@@ -6,6 +6,7 @@ var actions = Reflux.createActions({
     "fileBrowserLoadRoot": {},
     "fileBrowserLoadBack": {},
     "fileBrowserReload": {},
+    "fileBrowserUpdateState": {},
     "fileBrowserDownloadFile": {},
     "uploaderAddFile": {},
     "uploaderClearFiles": {}

@@ -10,8 +10,8 @@ var fileBrowserStore = require('./fileBrowserStore');
 
 var FileBrowser = React.createClass({
     mixins: [Reflux.connect(fileBrowserStore, "filesList"), Reflux.listenTo(fileBrowserStore,"onFilesChange")],
-    getInitialState() {
-        return { backTitle: '', mainTitle: 'My'}
+    componentDidMount() {
+        actions.fileBrowserUpdateState();
     },
     onFilesChange: function (files, state) {
         console.log('files changed');
@@ -21,7 +21,7 @@ var FileBrowser = React.createClass({
         return <div className="fileBrowser">
             <NavBar>
                 {this.state.backTitle ? <NavButton left onClick={this.handleBackClick}>{this.state.backTitle}</NavButton> : null}
-                <NavButton right icon={false}><Link to="uploader">Uploader</Link></NavButton>
+                <NavButton right icon={false}><Link to="uploader">Upload file</Link></NavButton>
                 <Title>{this.state.mainTitle}</Title>
             </NavBar>
 
