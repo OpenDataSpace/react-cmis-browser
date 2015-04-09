@@ -5,6 +5,7 @@ var { Route, RouteHandler, Link } = Router;
 var Ratchet = require('react-ratchet');
 var { NavBar, NavButton, Title } = Ratchet;
 var FileList = require('./FileList');
+var TabBar = require('./TabBar');
 var actions = require('../actions');
 var fileBrowserStore = require('./fileBrowserStore');
 
@@ -29,6 +30,7 @@ var FileBrowser = React.createClass({
             <br/>
             <FileList filesList={this.state.filesList} />
             <br/>
+            <TabBar repositoryName={this.state.repositoryName}/>
         </div>;
     },
     handleUpdateClick: function (evt) {

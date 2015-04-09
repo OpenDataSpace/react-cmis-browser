@@ -16,7 +16,7 @@ var Main = React.createClass({
     onMainChange(state) {
         this.setState(state);
         if (state.loggedIn) {
-            actions.fileBrowserLoadRoot();
+            actions.fileBrowserOpenRepository();
             this.context.router.transitionTo('/fileBrowser');
         }
     },

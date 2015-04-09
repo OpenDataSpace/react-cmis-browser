@@ -12,8 +12,11 @@ var Uploader = require('./src/Uploader/Uploader.js');
     var app = require('./src/app');
     config.cmis.onConnectCallback = function (session) {
         var cmisLocalServer = "http://" + window.location.host + config.webServer.proxySource;
-        session.defaultRepository.repositoryUrl = session.defaultRepository.repositoryUrl.replace('https://', 'http://').replace(config.webServer.proxyTarget, cmisLocalServer);
-        session.defaultRepository.rootFolderUrl = session.defaultRepository.rootFolderUrl.replace('https://', 'http://').replace(config.webServer.proxyTarget, cmisLocalServer);
+        for (var key in session.repositories) {
+            var repo = session.repositories[key];
+            repo.repositoryUrl = repo.repositoryUrl.replace('https://', 'http://').replace(config.webServer.proxyTarget, cmisLocalServer);
+            repo.rootFolderUrl = repo.rootFolderUrl.replace('https://', 'http://').replace(config.webServer.proxyTarget, cmisLocalServer);
+        }
     };
     app.cmisConnector = new CmisConnector(config.cmis);
 })();

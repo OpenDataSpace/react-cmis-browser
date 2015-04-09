@@ -1,28 +1,37 @@
 var Reflux = require('reflux');
 var app = require('../app');
+var utils = require('../utils');
 var actions = require('../actions');
 
 var fileBrowserStore = Reflux.createStore({
     list: [],
-    rootFolderId: undefined,
     currentFolderId: undefined,
     currentFolderName: 'My',
     currentFolder: {
         id: undefined,
         name: 'My'
     },
+    currentRepo: undefined,
     foldersHistory: [],
     init: function () {
-        this.listenTo(actions.fileBrowserLoadRoot, this.onLoadRoot);
         this.listenTo(actions.fileBrowserLoadPath, this.onLoadPath);
         this.listenTo(actions.fileBrowserLoadBack, this.onLoadBack);
         this.listenTo(actions.fileBrowserReload, this.onLoadUpdate);
         this.listenTo(actions.fileBrowserDownloadFile, this.onFileDownload);
         this.listenTo(actions.fileBrowserUpdateState, this.triggerUpdateState);
+        this.listenTo(actions.fileBrowserOpenRepository, this.onOpenRepository);
     },
-    onLoadRoot: function() {
-        this.rootFolderId = app.cmisConnector.session.defaultRepository.rootFolderId;
-        this.onLoadPath({id: this.rootFolderId, name: 'My'}, true);
+    onOpenRepository(keyName) {
+        keyName = keyName || 'my';
+        var session = app.cmisConnector.session;
+        for (var key in session.repositories) {
+            var repo = session.repositories[key];
+            if (repo.repositoryName === keyName) {
+                this.currentRepo = repo;
+                this.foldersHistory = [];
+                this.onLoadPath({id: this.currentRepo.rootFolderId, name: utils.stringUtils.capitalize(this.currentRepo.repositoryName)}, true);
+            }
+        }
     },
     onLoadUpdate: function() {
         this.onLoadPath(this.currentFolder, true);
@@ -51,8 +60,12 @@ var fileBrowserStore = Reflux.createStore({
     },
     triggerUpdateState() {
         var history = this.foldersHistory;
-        var backFolderName = history.length > 0 ? history[history.length - 1].name : '';
-        this.trigger(this.list, {mainTitle: this.currentFolder.name, backTitle: backFolderName });
+        var newState = {
+            mainTitle: this.currentFolder.name,
+            backTitle: history.length > 0 ? history[history.length - 1].name : '',
+            repositoryName: this.currentRepo ? this.currentRepo.repositoryName : 'my'
+        };
+        this.trigger(this.list, newState);
     },
     onFileDownload: function(fileId) {
         var session = app.cmisConnector.session;
