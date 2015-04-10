@@ -12,12 +12,12 @@ var SettingsPage = require('./src/Settings/SettingsPage.js');
     var CmisConnector = require('./src/lib/cmisConnector');
     var app = require('./src/app');
     config.cmis.onConnectCallback = function (session) {
-        var cmisLocalServer = "http://" + window.location.host + config.webServer.proxySource;
+        /*var cmisLocalServer = "http://" + window.location.host + config.webServer.proxySource;
         for (var key in session.repositories) {
             var repo = session.repositories[key];
             repo.repositoryUrl = repo.repositoryUrl.replace('https://', 'http://').replace(config.webServer.proxyTarget, cmisLocalServer);
             repo.rootFolderUrl = repo.rootFolderUrl.replace('https://', 'http://').replace(config.webServer.proxyTarget, cmisLocalServer);
-        }
+        }*/
     };
     app.cmisConnector = new CmisConnector(config.cmis);
 })();
